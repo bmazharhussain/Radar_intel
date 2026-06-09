@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>RADAR — Career Interview</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f8fb;--card:#fff;--line:#e5e7ef;--text:#111827;--muted:#6b7280;
+  --p:#635bff;--p2:#7c3aed;--green:#16a34a;--amber:#d97706;--red:#dc2626;
+  --shadow:0 4px 20px rgba(17,24,39,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
+button{font-family:Inter,sans-serif;cursor:pointer}
+
+/* HEADER */
+.header{background:#fff;border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:50}
+.logo{font-size:20px;font-weight:900;letter-spacing:-.05em}
+.logo span{color:var(--p)}
+.header-right{display:flex;gap:8px;align-items:center}
+.pause-btn{border:1px solid var(--line);background:#fff;color:var(--muted);padding:7px 14px;border-radius:10px;font-size:13px;font-weight:600;display:none;align-items:center;gap:5px}
+.pause-btn.visible{display:flex}
+.pause-btn:hover{border-color:var(--amber);color:var(--amber)}
+
+/* PROGRESS */
+.progress-bar{background:#fff;border-bottom:1px solid var(--line);padding:10px 16px;display:none}
+.progress-bar.visible{display:block}
+.prog-top{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.prog-track{height:6px;background:#eef0f7;border-radius:999px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--p2));border-radius:999px;transition:width .5s ease}
+.stage-row{display:flex;gap:6px;overflow:auto;scrollbar-width:none;margin-top:8px}
+.stage-row::-webkit-scrollbar{display:none}
+.stage-pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--soft);white-space:nowrap;flex-shrink:0;background:#fff}
+.stage-pill.act{background:var(--p);color:#fff;border-color:var(--p)}
+.stage-pill.done{background:#ecfdf3;color:var(--green);border-color:#bbf7d0}
+
+/* SCREENS */
+.screen{display:none;flex:1;flex-direction:column}
+.screen.act{display:flex}
+
+/* ── PATHWAY SCREEN ── */
+.pathway-screen{align-items:center;justify-content:center;padding:24px;gap:20px;text-align:center}
+.pathway-hero{font-size:52px}
+.pathway-screen h1{font-size:26px;font-weight:900;letter-spacing:-.05em}
+.pathway-screen p{color:var(--muted);font-size:14px;max-width:340px;line-height:1.6}
+.pathway-cards{display:flex;flex-direction:column;gap:12px;width:100%;max-width:420px}
+.pathway-card{background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:14px}
+.pathway-card:hover{border-color:var(--p);transform:translateY(-2px);box-shadow:var(--shadow)}
+.pathway-card.selected{border-color:var(--p);background:#f5f3ff}
+.pc-icon{font-size:28px;flex-shrink:0;width:48px;height:48px;background:#f5f3ff;border-radius:14px;display:flex;align-items:center;justify-content:center}
+.pc-body h3{font-size:15px;font-weight:800;margin-bottom:3px}
+.pc-body p{font-size:13px;color:var(--muted);line-height:1.4}
+
+/* ── WELCOME / CV SCREEN ── */
+.cv-screen{align-items:center;justify-content:flex-start;padding:20px;gap:16px;overflow-y:auto}
+.cv-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;width:100%;max-width:480px}
+.cv-card h2{font-size:18px;font-weight:800;letter-spacing:-.03em;margin-bottom:6px}
+.cv-card p{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5}
+.upload-zone{border:2px dashed #ddd6fe;border-radius:14px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s;background:#fafbff;margin-bottom:12px}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--p);background:#f5f3ff}
+.upload-zone.done{border-color:var(--green);border-style:solid;background:#f0fdf4}
+.uz-icon{font-size:28px;margin-bottom:6px}
+.uz-title{font-size:14px;font-weight:700;color:var(--p);margin-bottom:2px}
+.uz-sub{font-size:11px;color:var(--muted)}
+.or-row{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;margin:10px 0}
+.or-line{flex:1;height:1px;background:var(--line)}
+.cv-textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:13px;font-family:Inter,sans-serif;height:110px;resize:none;outline:0;line-height:1.5}
+.cv-textarea:focus{border-color:var(--p)}
+.start-btn{width:100%;border:0;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;padding:13px;border-radius:12px;font-size:15px;font-weight:800;margin-top:12px;transition:all .15s}
+.start-btn:hover{opacity:.9}
+.sample-link{display:block;text-align:center;color:var(--p);font-size:13px;font-weight:600;margin-top:10px;cursor:pointer;text-decoration:underline}
+.upload-status{font-size:12px;color:var(--green);font-weight:600;text-align:center;margin:4px 0;display:none}
+
+/* ── STUDENT SCREEN ── */
+.student-screen{align-items:center;justify-content:flex-start;padding:20px;gap:16px;overflow-y:auto}
+
+/* ── CHAT SCREEN ── */
+.chat-screen{flex-direction:column;overflow:hidden}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg-wrap{display:flex;gap:10px;align-items:flex-start}
+.msg-wrap.user{flex-direction:row-reverse}
+.avatar{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.avatar.bot{background:linear-gradient(135deg,var(--p),var(--p2))}
+.avatar.user{background:#e5e7eb}
+.bubble{max-width:82%;padding:11px 14px;border-radius:16px;font-size:14px;line-height:1.55}
+.bubble.bot{background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+.bubble.user{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border-bottom-right-radius:4px}
+.btime{font-size:10px;color:var(--muted);margin-top:4px}
+.btime.r{text-align:right;color:rgba(255,255,255,.6)}
+
+/* QUICK OPTIONS */
+.q-opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.q-opt{border:1px solid #ddd6fe;background:#f5f3ff;color:var(--p);padding:8px 14px;border-radius:10px;font-size:13px;font-weight:600;transition:all .15s;text-align:left}
+.q-opt:hover{background:#ede9fe}
+.q-opt.sel{background:var(--p);color:#fff;border-color:var(--p)}
+.q-opt:disabled{opacity:.6;cursor:default}
+
+/* SCALE */
+.scale-wrap{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.scale-btns{display:flex;gap:4px}
+.scale-btn{flex:1;padding:8px 4px;border:1px solid var(--line);background:#fff;border-radius:8px;font-size:13px;font-weight:700;color:var(--muted);transition:all .15s;text-align:center}
+.scale-btn:hover{border-color:var(--p);color:var(--p)}
+.scale-btn.sel{background:var(--p);color:#fff;border-color:var(--p)}
+.scale-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);padding:0 2px}
+
+/* PAUSE / COURTESY CARD */
+.pause-card{background:#fffbeb;border:1px solid #fde68a;border-radius:16px;padding:14px;margin-top:4px}
+.pause-card p{font-size:14px;color:#78350f;margin-bottom:10px;line-height:1.5}
+.pause-card-btns{display:flex;gap:8px}
+.pc-yes{flex:1;border:0;background:var(--p);color:#fff;padding:10px;border-radius:10px;font-weight:700;font-size:14px}
+.pc-no{flex:1;border:1px solid var(--line);background:#fff;color:var(--muted);padding:10px;border-radius:10px;font-weight:700;font-size:14px}
+
+/* INPUT AREA */
+.input-area{padding:12px 16px;border-top:1px solid var(--line);background:#fff;flex-shrink:0}
+.input-row{display:flex;gap:8px;align-items:flex-end}
+.input-box{flex:1;border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:14px;font-family:Inter,sans-serif;outline:0;resize:none;max-height:120px;min-height:44px;transition:border-color .15s;line-height:1.4}
+.input-box:focus{border-color:var(--p)}
+.mic-btn{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;position:relative}
+.mic-btn.listening{background:#fef2f2;border-color:#fca5a5;animation:mpulse 1s infinite}
+.mic-btn:hover{border-color:var(--p)}
+.mic-badge{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;border-radius:999px;font-size:9px;font-weight:700;padding:1px 4px;display:none}
+.mic-badge.show{display:block}
+@keyframes mpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.send-btn{width:44px;height:44px;border-radius:12px;border:0;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.send-btn:disabled{opacity:.4}
+.input-hint{font-size:11px;color:var(--muted);margin-top:5px;text-align:center;min-height:16px}
+.mic-tip{font-size:12px;color:var(--amber);font-weight:600;text-align:center;margin-top:4px;display:none}
+.mic-tip.show{display:block}
+
+/* PAUSED SCREEN */
+.paused-screen{align-items:center;justify-content:center;padding:24px;gap:16px;text-align:center}
+.paused-screen h2{font-size:22px;font-weight:900;letter-spacing:-.04em}
+.paused-screen p{color:var(--muted);font-size:14px;max-width:320px;line-height:1.6}
+.resume-btn{border:0;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;padding:13px 32px;border-radius:12px;font-size:15px;font-weight:800}
+
+/* CONFIRM ROLES SCREEN */
+.confirm-screen{align-items:center;justify-content:flex-start;padding:20px;gap:16px;overflow-y:auto}
+.confirm-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;width:100%;max-width:480px}
+.confirm-card h2{font-size:18px;font-weight:800;letter-spacing:-.03em;margin-bottom:6px}
+.confirm-card p{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5}
+.role-confirm-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.role-confirm-item{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#fafbff;display:flex;flex-direction:column;gap:6px}
+.role-confirm-item.editing{border-color:var(--p);background:#f5f3ff}
+.rci-top{display:flex;justify-content:space-between;align-items:center}
+.rci-title{font-weight:700;font-size:14px}
+.rci-company{font-size:12px;color:var(--muted)}
+.rci-dates{font-size:11px;color:var(--soft)}
+.rci-actions{display:flex;gap:6px}
+.rci-edit{border:1px solid var(--line);background:#fff;color:var(--muted);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.rci-remove{border:1px solid #fecaca;background:#fef2f2;color:var(--red);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.rci-edit-fields{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.rci-input{border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13px;font-family:Inter,sans-serif;outline:0;width:100%}
+.rci-input:focus{border-color:var(--p)}
+.rci-save{border:0;background:var(--p);color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700}
+.add-role-btn{border:1px dashed #ddd6fe;background:#fafbff;color:var(--p);padding:10px;border-radius:12px;font-size:13px;font-weight:600;width:100%;margin-bottom:8px}
+.confirm-note{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px 12px;font-size:12px;color:#78350f;margin-bottom:14px}
+.confirm-btn{width:100%;border:0;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;padding:13px;border-radius:12px;font-size:15px;font-weight:800}
+
+/* COMPLETE SCREEN */
+.complete-screen{align-items:center;justify-content:center;padding:24px;gap:16px;text-align:center;overflow-y:auto}
+.complete-screen h2{font-size:24px;font-weight:900;letter-spacing:-.04em}
+.complete-screen p{color:var(--muted);font-size:14px;max-width:340px;line-height:1.6}
+.profile-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;width:100%;max-width:480px;text-align:left}
+.profile-card h3{font-size:13px;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.profile-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.profile-row:last-child{border-bottom:0}
+.profile-row .lbl{color:var(--muted);font-weight:600;flex-shrink:0;font-size:12px}
+.profile-row .val{text-align:right;line-height:1.4}
+.restart-btn{border:1px solid var(--line);background:#fff;color:var(--muted);padding:10px 24px;border-radius:10px;font-size:13px;font-weight:700}
+
+/* TYPING */
+.typing{display:flex;gap:4px;padding:12px 14px;align-items:center}
+.tdot{width:7px;height:7px;background:var(--muted);border-radius:50%;animation:tb .8s infinite}
+.tdot:nth-child(2){animation-delay:.15s}
+.tdot:nth-child(3){animation-delay:.3s}
+@keyframes tb{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+/* MIC PERMISSION MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:100;align-items:flex-end;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:480px;padding:24px;animation:slideup .25s ease}
+@keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal h3{font-size:18px;font-weight:800;margin-bottom:8px}
+.modal p{color:#4b5563;font-size:14px;margin-bottom:16px;line-height:1.5}
+.modal-btns{display:flex;gap:10px}
+.modal-allow{flex:1;border:0;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;padding:12px;border-radius:12px;font-weight:700;font-size:14px}
+.modal-skip{flex:1;border:1px solid var(--line);background:#fff;color:var(--muted);padding:12px;border-radius:12px;font-weight:700;font-size:14px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">RAD<span>AR</span></div>
+  <div class="header-right">
+    <button class="pause-btn" id="pauseBtn" onclick="pauseInterview()">⏸ Save & Pause</button>
+  </div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar" id="progressBar">
+  <div class="prog-top">
+    <span id="progLabel">Getting started...</span>
+    <span id="progPct"></span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  <div class="stage-row" id="stageRow"></div>
+</div>
+
+<!-- ══ PATHWAY SELECTION SCREEN ══ -->
+<div class="screen pathway-screen act" id="screenPathway">
+  <div class="pathway-hero">🧭</div>
+  <h1>Where are you right now?</h1>
+  <p>This helps us ask you the right questions and give you genuinely useful advice.</p>
+  <div class="pathway-cards">
+    <div class="pathway-card" onclick="selectPathway('student')">
+      <div class="pc-icon">🎓</div>
+      <div class="pc-body">
+        <h3>Student or no work experience</h3>
+        <p>I'm studying or just starting out — help me explore what careers are out there</p>
+      </div>
+    </div>
+    <div class="pathway-card" onclick="selectPathway('experienced')">
+      <div class="pc-icon">💼</div>
+      <div class="pc-body">
+        <h3>I have work experience</h3>
+        <p>Build my career profile, help me understand my strengths and where to go next</p>
+      </div>
+    </div>
+    <div class="pathway-card" onclick="selectPathway('explore')">
+      <div class="pc-icon">🔭</div>
+      <div class="pc-body">
+        <h3>Fresh start — open to everything</h3>
+        <p>I have experience but want unbiased advice — don't look at my background</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CV UPLOAD SCREEN (experienced path) ══ -->
+<div class="screen cv-screen" id="screenCV">
+  <div class="cv-card">
+    <h2>Let's build your career profile</h2>
+    <p>Upload your CV or paste your background. We'll read it and ask targeted questions — you won't need to type everything out.</p>
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()" ondragover="handleDragOver(event)" ondrop="handleDrop(event)">
+      <div class="uz-icon">📎</div>
+      <div class="uz-title" id="uzTitle">Tap to upload your CV</div>
+      <div class="uz-sub">PDF or Word (.docx) · Max 10MB</div>
+    </div>
+    <input type="file" id="fileInput" accept=".pdf,.doc,.docx" style="display:none" onchange="handleFileSelect(event)">
+    <div class="upload-status" id="uploadStatus"></div>
+    <div class="or-row"><div class="or-line"></div>or paste text<div class="or-line"></div></div>
+    <textarea class="cv-textarea" id="cvInput" placeholder="Paste your CV, LinkedIn summary, or describe your career background..."></textarea>
+    <button class="start-btn" onclick="startExperiencedInterview()">Start My Career Interview →</button>
+    <span class="sample-link" onclick="loadSample()">Load sample CV to try it out</span>
+  </div>
+</div>
+
+<!-- ══ CONFIRM ROLES SCREEN ══ -->
+<div class="screen confirm-screen" id="screenConfirm">
+  <div class="confirm-card">
+    <h2>Does this look right?</h2>
+    <p>Here's what I found in your CV. Fix anything that's wrong before we start — the questions will be tailored to each role and company.</p>
+    <div class="confirm-note" id="confirmNote"></div>
+    <div class="role-confirm-list" id="roleConfirmList"></div>
+    <button class="add-role-btn" onclick="addRoleManually()">+ Add a role manually</button>
+    <button class="confirm-btn" onclick="confirmRolesAndStart()">Yes, looks right — start interview →</button>
+  </div>
+</div>
+
+<!-- ══ STUDENT / EXPLORER SCREEN ══ -->
+<div class="screen student-screen" id="screenStudent">
+  <div class="cv-card">
+    <h2 id="studentTitle">Let's find your path</h2>
+    <p id="studentSubtitle">Answer a few questions and we'll show you careers that match who you are.</p>
+    <button class="start-btn" onclick="startStudentInterview()">Let's Go →</button>
+  </div>
+</div>
+
+<!-- ══ CHAT SCREEN ══ -->
+<div class="screen chat-screen" id="screenChat">
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="input-area">
+    <div class="input-row">
+      <textarea class="input-box" id="userInput" placeholder="Type your answer..." rows="1"
+        onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="mic-btn" id="micBtn" onclick="requestMic()" title="Voice input">
+        🎤<span class="mic-badge" id="micBadge">!</span>
+      </button>
+      <button class="send-btn" onclick="sendMessage()">↑</button>
+    </div>
+    <div class="input-hint" id="inputHint">Tap mic to speak your answer</div>
+    <div class="mic-tip" id="micTip">🎤 Voice needs a proper URL — won't work from Downloads. Use GitHub Pages or localhost.</div>
+  </div>
+</div>
+
+<!-- ══ PAUSED SCREEN ══ -->
+<div class="screen paused-screen" id="screenPaused">
+  <div style="font-size:48px">⏸</div>
+  <h2>No problem — we've saved your progress</h2>
+  <p>Come back any time. Your answers are saved on this device. Pick up exactly where you left off.</p>
+  <button class="resume-btn" onclick="resumeInterview()">Continue where I left off →</button>
+  <button class="restart-btn" style="margin-top:8px" onclick="showScreen('screenPathway')">Start fresh instead</button>
+</div>
+
+<!-- ══ COMPLETE SCREEN ══ -->
+<div class="screen complete-screen" id="screenComplete">
+  <div style="font-size:52px">🎉</div>
+  <h2>Your profile is ready</h2>
+  <p>We've captured your career story. Here's a summary of what we've built for you.</p>
+  <div class="profile-card" id="profileCard"></div>
+  <button class="restart-btn" style="margin-top:8px" onclick="restartAll()">← Start again</button>
+</div>
+
+<!-- MIC PERMISSION MODAL -->
+<div class="modal-bg" id="micModal">
+  <div class="modal">
+    <div style="font-size:36px;margin-bottom:8px">🎤</div>
+    <h3>Use your voice to answer</h3>
+    <p>Speaking is much faster than typing — especially for longer answers. We'll need microphone access to enable this.</p>
+    <div style="background:#fef9c3;border-radius:10px;padding:10px 12px;font-size:12px;color:#78350f;margin-bottom:14px">
+      <strong>Note:</strong> If you opened this file from Downloads, voice may not work due to browser security. 
+      For best results, open via a URL (e.g. GitHub Pages or localhost).
+    </div>
+    <div class="modal-btns">
+      <button class="modal-allow" onclick="enableMic()">Allow microphone</button>
+      <button class="modal-skip" onclick="closeMicModal()">I'll type instead</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   RADAR INTERVIEW ENGINE v2 — PHASE 1 (LOCAL RULE-BASED)
+   ─────────────────────────────────────────────────────────────────────
+   TO UPGRADE: Replace the CV_PARSER and QUESTION_SELECTOR blocks with
+   a single Claude API call. Input: cvText → Output: selectedQuestions[]
+   All UI, flow control, localStorage remain unchanged.
+═══════════════════════════════════════════════════════════════════════ */
+
+/* ── APP STATE ──────────────────────────────────────────────────────── */
+const APP = {
+  pathway: null,        // 'student' | 'experienced' | 'explore'
+  profile: null,        // parsed CV profile
+  roles: [],            // extracted roles with full context
+  currentRole: 0,       // index
+  questions: [],        // selected questions for current role
+  qIndex: 0,            // question index within current role
+  answers: [],          // all captured answers
+  totalQ: 0,            // total questions across all roles
+  answeredQ: 0,         // answered so far
+  sinceCourtesy: 0,     // questions since last courtesy check
+  currentQ: null,       // active question object
+  micEnabled: false,
+  recognition: null,
+  isListening: false,
+  paused: false
+};
+
+/* ══════════════════════════════════════════════════════════════════════
+   BLOCK 1: CV PARSER
+   ── SWAP THIS BLOCK WITH CLAUDE API FOR PRODUCTION ──────────────────
+   Input:  rawText (string)
+   Output: { roles[], skills[], seniority, industries[], yearsExp, gaps[] }
+══════════════════════════════════════════════════════════════════════ */
+function parseCV(text) {
+  const lower = text.toLowerCase();
+  return {
+    rawText: text,
+    roles: extractRoles(text),
+    skills: extractSkills(lower),
+    seniority: extractSeniority(lower),
+    industries: extractIndustries(lower),
+    yearsExp: extractYears(lower),
+    gaps: []
+  };
+}
+
+function extractRoles(text) {
+  const roles = [];
+  const seen = new Set();
+  const lines = text.split(/\n/).map(l => l.trim()).filter(Boolean);
+
+  const titleKeywords = ['Manager','Director','Engineer','Analyst','Developer','Consultant',
+    'Lead','Head','VP','Officer','Specialist','Coordinator','Executive','Designer',
+    'Architect','Scientist','Associate','Partner','Strategist','Advisor','Owner',
+    'Founder','President','Principal','Controller','Supervisor','Administrator','Planner'];
+
+  // ── STRATEGY 1: "Title at/@ Company (dates)" pattern on one line ──
+  const atPattern = /^(.{4,60}?)\s+(?:at|@|,)\s+([A-Z][A-Za-z0-9\s&.,'-]{1,40}?)(?:\s*[\|(]|\s*(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|\d{4})|$)/gm;
+  let m;
+  while ((m = atPattern.exec(text)) !== null) {
+    const title = m[1].trim().replace(/^[-–—·•]\s*/,'');
+    const company = m[2].trim();
+    if (titleKeywords.some(kw => title.includes(kw)) && title.length < 70) {
+      const key = title.toLowerCase().slice(0,35);
+      if (!seen.has(key)) {
+        seen.add(key);
+        const dates = extractDatesNear(text, m.index);
+        roles.push({ title, company, dates, raw: m[0] });
+      }
+    }
+  }
+
+  // ── STRATEGY 2: "Title | Company" or "Title • Company" pipe-separated ──
+  lines.forEach((line, idx) => {
+    if (line.length > 150) return;
+    const pipeMatch = line.match(/^(.{4,60}?)\s*[|•·]\s*(.{2,50}?)(?:\s*[|•·(]|$)/);
+    if (pipeMatch) {
+      const title = pipeMatch[1].trim().replace(/^[-–—]\s*/,'');
+      const company = pipeMatch[2].trim();
+      if (titleKeywords.some(kw => title.includes(kw))) {
+        const key = title.toLowerCase().slice(0,35);
+        if (!seen.has(key) && title.length < 70) {
+          seen.add(key);
+          const dates = extractDatesFromContext(lines, idx, line);
+          roles.push({ title, company, dates, raw: line });
+        }
+      }
+    }
+  });
+
+  // ── STRATEGY 3: Title on its own line, company on next line ──
+  lines.forEach((line, idx) => {
+    if (titleKeywords.some(kw => line.includes(kw)) && line.length < 70 && line.length > 4) {
+      const key = line.toLowerCase().slice(0,35);
+      if (!seen.has(key)) {
+        // Check next 1-2 lines for company name
+        let company = null;
+        for (let j = idx+1; j <= Math.min(idx+3, lines.length-1); j++) {
+          const next = lines[j];
+          if (next.length > 2 && next.length < 60 && /^[A-Z]/.test(next)
+              && !next.match(/^\d/) && !titleKeywords.some(kw => next.includes(kw))) {
+            company = next.replace(/[,|•·(].*/,'').trim();
+            break;
+          }
+        }
+        const dates = extractDatesFromContext(lines, idx, line);
+        seen.add(key);
+        const cleanTitle = line.replace(/^[-–—·•]\s*/,'').trim();
+        roles.push({ title: cleanTitle, company, dates, raw: line });
+      }
+    }
+  });
+
+  // ── STRATEGY 4: Header summary line fallback ──
+  // Handles "AZHAR HUSSAIN  Strategy & Business Operations Leader | Marketplace Ops | ..."
+  if (roles.length === 0) {
+    const fullText = text.replace(/\n/g,' ');
+    // Look for summary title patterns
+    const summaryMatch = fullText.match(/(?:^|\n)([A-Z][A-Za-z\s]+(?:Leader|Manager|Director|Executive|Specialist|Consultant|Engineer|Analyst|Developer)[A-Za-z\s]*)/);
+    if (summaryMatch) {
+      const raw = summaryMatch[1].trim();
+      // Split on | if multiple titles
+      const parts = raw.split(/[|•·,]/).map(p => p.trim()).filter(p => p.length > 3 && p.length < 60);
+      parts.forEach(part => {
+        if (titleKeywords.some(kw => part.includes(kw)) || part.match(/Leader|Expert|Professional/)) {
+          const key = part.toLowerCase().slice(0,35);
+          if (!seen.has(key)) {
+            seen.add(key);
+            roles.push({ title: part, company: null, dates: null, raw: part });
+          }
+        }
+      });
+    }
+  }
+
+  // ── STRATEGY 5: Last resort — scan for any title keyword combinations ──
+  if (roles.length === 0) {
+    const lower = text.toLowerCase();
+    const genericTitles = [
+      {kw:'program manager',title:'Program Manager'},{kw:'project manager',title:'Project Manager'},
+      {kw:'product manager',title:'Product Manager'},{kw:'software engineer',title:'Software Engineer'},
+      {kw:'data analyst',title:'Data Analyst'},{kw:'business analyst',title:'Business Analyst'},
+      {kw:'operations manager',title:'Operations Manager'},{kw:'strategy manager',title:'Strategy Manager'},
+      {kw:'analytics lead',title:'Analytics Lead'},{kw:'consultant',title:'Consultant'},
+      {kw:'developer',title:'Developer'},{kw:'designer',title:'Designer'}
+    ];
+    genericTitles.forEach(g => {
+      if (lower.includes(g.kw) && !seen.has(g.kw)) {
+        seen.add(g.kw);
+        roles.push({ title: g.title, company: null, dates: null, raw: g.kw });
+      }
+    });
+  }
+
+  // Deduplicate and prefer entries with more context (company + dates)
+  const scored = roles.map(r => ({ ...r, score: (r.company?2:0) + (r.dates?1:0) }));
+  scored.sort((a,b) => b.score - a.score);
+  const deduped = [];
+  const finalSeen = new Set();
+  scored.forEach(r => {
+    const key = r.title.toLowerCase().replace(/[^a-z\s]/g,'').trim().slice(0,30);
+    if (!finalSeen.has(key)) {
+      finalSeen.add(key);
+      deduped.push(r);
+    }
+  });
+
+  return deduped.slice(0, 4);
+}
+
+function extractDatesNear(text, index) {
+  const snippet = text.substring(Math.max(0,index-50), index+150);
+  const m = snippet.match(/(\d{4})\s*[-–—to]+\s*(\d{4}|[Pp]resent|[Cc]urrent|[Nn]ow)/);
+  return m ? `${m[1]}–${m[2]}` : null;
+}
+
+function extractCompanyFromContext(lines, lineIdx, currentLine) {
+  // Look in current line for company name after separator
+  const inLine = currentLine.match(/(?:[|•·–—@at])\s*([A-Z][A-Za-z\s&.,]+?)(?:\s*[|•·–—(]|$)/);
+  if (inLine) return inLine[1].trim();
+
+  // Look in nearby lines (±2)
+  for (let i = Math.max(0, lineIdx-2); i <= Math.min(lines.length-1, lineIdx+2); i++) {
+    if (i === lineIdx) continue;
+    const near = lines[i].trim();
+    // Company-like: capitalised, not too long, no verb patterns
+    if (near.length > 2 && near.length < 50 && /^[A-Z]/.test(near) && !near.match(/^(The|I |We |My |In )/)) {
+      // If this line looks like a company (all caps acronym, known company patterns)
+      if (near.match(/(?:Ltd|Inc|Corp|Group|Bank|Consulting|Digital|Technologies|Solutions|Services)/i)) {
+        return near;
+      }
+    }
+  }
+  return null;
+}
+
+function extractDatesFromContext(lines, lineIdx, currentLine) {
+  const datePattern = /(\d{4})\s*[-–—to]+\s*(\d{4}|present|current|now)/gi;
+  for (let i = Math.max(0, lineIdx-1); i <= Math.min(lines.length-1, lineIdx+2); i++) {
+    const m = datePattern.exec(lines[i]);
+    if (m) return `${m[1]}–${m[2]}`;
+    datePattern.lastIndex = 0;
+  }
+  return null;
+}
+
+function deriveCareerSuggestions() {
+  // Map answer content to career suggestions
+  const answerText = APP.answers.map(a => String(a.answer).toLowerCase()).join(' ');
+  const suggestions = [];
+
+  const careerMap = [
+    { keys:['technology','tech','coding','programming','software','computer','data','ai','machine learning'], paths:[
+      {id:'software_engineering',title:'Software Engineering',emoji:'💻'},
+      {id:'data_analytics',title:'Data & Analytics',emoji:'📊'},
+      {id:'ai_machine_learning',title:'AI & Machine Learning',emoji:'🤖'}
+    ]},
+    { keys:['business','management','operations','organis','strategy','planning'], paths:[
+      {id:'program_management',title:'Program Management',emoji:'📋'},
+      {id:'product_management',title:'Product Management',emoji:'🧩'},
+      {id:'operations_supply_chain',title:'Operations & Supply Chain',emoji:'🏭'}
+    ]},
+    { keys:['finance','accounting','money','banking','investment','economics'], paths:[
+      {id:'finance_accounting',title:'Finance & Accounting',emoji:'🧾'},
+      {id:'banking_financial_services',title:'Banking & Financial Services',emoji:'🏦'}
+    ]},
+    { keys:['health','medicine','nursing','doctor','patient','care','biology','science'], paths:[
+      {id:'healthcare_clinical',title:'Healthcare & Clinical',emoji:'🩺'},
+      {id:'nursing_midwifery',title:'Nursing & Midwifery',emoji:'🏥'}
+    ]},
+    { keys:['design','creative','art','visual','ux','ui','brand','marketing'], paths:[
+      {id:'design_ux',title:'Design & UX',emoji:'🎨'},
+      {id:'marketing_growth',title:'Marketing & Growth',emoji:'🎯'}
+    ]},
+    { keys:['people','helping','community','social','education','teaching','ngo','charity'], paths:[
+      {id:'education_learning',title:'Education & Learning',emoji:'👩‍🏫'},
+      {id:'nonprofit_development',title:'NGO & International Development',emoji:'🌍'}
+    ]},
+    { keys:['build','startup','entrepreneur','own business','founder','idea'], paths:[
+      {id:'entrepreneurship',title:'Entrepreneurship & Startups',emoji:'🚀'}
+    ]},
+    { keys:['environment','sustainability','climate','green','energy'], paths:[
+      {id:'environmental_sustainability',title:'Environmental & Sustainability',emoji:'🌿'}
+    ]}
+  ];
+
+  const added = new Set();
+  careerMap.forEach(map => {
+    if (map.keys.some(k => answerText.includes(k))) {
+      map.paths.forEach(p => {
+        if (!added.has(p.id) && suggestions.length < 5) {
+          added.add(p.id);
+          suggestions.push(p);
+        }
+      });
+    }
+  });
+
+  // Fallback — show popular paths if nothing matched
+  if (suggestions.length === 0) {
+    return [
+      {id:'software_engineering',title:'Software Engineering',emoji:'💻'},
+      {id:'data_analytics',title:'Data & Analytics',emoji:'📊'},
+      {id:'program_management',title:'Program Management',emoji:'📋'},
+      {id:'marketing_growth',title:'Marketing & Growth',emoji:'🎯'},
+      {id:'finance_accounting',title:'Finance & Accounting',emoji:'🧾'}
+    ];
+  }
+  return suggestions.slice(0, 5);
+}
+
+function extractSkills(lower) {
+  const map = {
+    'stakeholder management':['stakeholder'],'project management':['project management','pmp','prince2'],
+    'agile':['agile','scrum','kanban'],'data analysis':['data analysis','analytics','sql'],
+    'python':['python'],'leadership':['team lead','leadership','led a team','managed a team'],
+    'product management':['product management','roadmap','backlog'],
+    'cloud computing':['aws','azure','gcp','cloud'],'strategy':['strategy','strategic'],
+    'financial management':['budget','p&l','financial planning'],
+    'change management':['change management','transformation'],
+    'risk management':['risk management','risk assessment'],
+    'machine learning':['machine learning','ml model','deep learning'],
+    'communication':['stakeholder communication','executive communication'],
+    'programme delivery':['programme delivery','programme management']
+  };
+  return Object.keys(map).filter(skill => map[skill].some(k => lower.includes(k)));
+}
+
+function extractSeniority(lower) {
+  if (/\b(vp|vice president|chief|cto|ceo|coo|cfo|c-suite)\b/.test(lower)) return 'executive';
+  if (/\b(director|head of|principal)\b/.test(lower)) return 'director';
+  if (/\b(senior|lead |staff |principal)\b/.test(lower)) return 'senior';
+  if (/\b(junior|graduate|entry.level|intern)\b/.test(lower)) return 'entry';
+  return 'mid';
+}
+
+function extractIndustries(lower) {
+  const map = {
+    'financial services':['bank','finance','fintech','insurance','investment'],
+    'technology':['tech','software','saas','digital','startup'],
+    'healthcare':['health','nhs','hospital','pharma','clinical'],
+    'consulting':['consult','advisory','mckinsey','deloitte','pwc','kpmg'],
+    'retail & ecommerce':['retail','ecommerce','e-commerce','lazada','shopee'],
+    'government':['government','public sector','ministry','council'],
+    'ngo / development':['ngo','charity','nonprofit','unicef','undp','world bank'],
+    'manufacturing':['manufactur','factory','production','supply chain'],
+    'telecoms':['telco','telecom','maxis','celcom','grameenphone','robi']
+  };
+  return Object.keys(map).filter(ind => map[ind].some(k => lower.includes(k)));
+}
+
+function extractYears(lower) {
+  const match = lower.match(/(\d+)\+?\s+years?\s+(?:of\s+)?(?:experience|exp)/);
+  if (match) return parseInt(match[1]);
+  const allYears = [...lower.matchAll(/(\d+)\s+years?/g)].map(m => parseInt(m[1]));
+  return allYears.length ? Math.max(...allYears) : null;
+}
+/* ══ END BLOCK 1: CV PARSER ══════════════════════════════════════════ */
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   BLOCK 2: QUESTION SELECTOR & BANK
+   ── SWAP THIS BLOCK WITH CLAUDE API FOR PRODUCTION ──────────────────
+   Input:  role (object), profile (object), roleIndex (int)
+   Output: questions[] — 8-10 per role, mixed types, no repeats across roles
+══════════════════════════════════════════════════════════════════════ */
+
+// Each role gets a different THEME FOCUS so questions never repeat
+// Role 0 → Impact & Scale   Role 1 → Challenges & Growth
+// Role 2 → Skills & Delivery  Role 3 → Career & Reflection
+const ROLE_THEMES = ['impact', 'challenges', 'skills', 'career'];
+
+const QB = {
+
+  // ── OPENING (1 per role, always personalised, never generic) ──
+  opening: [
+    { id:'op1', type:'voice', priority:10, forTheme:'impact',
+      text: r => `You were **${r.title}${r.company ? ` at ${r.company}` : ''}**${r.dates ? ` (${r.dates})` : ''}. What was the biggest programme or initiative you owned there — the one that, if it had failed, people would have noticed?` },
+    { id:'op2', type:'voice', priority:10, forTheme:'challenges',
+      text: r => `Let's talk about **${r.company || r.title}**. What was the hardest thing about that chapter — not the daily frustrations, but the genuinely difficult professional challenge you faced?` },
+    { id:'op3', type:'voice', priority:10, forTheme:'skills',
+      text: r => `In your time as **${r.title}${r.company ? ` at ${r.company}` : ''}**, what's the capability you built that you simply wouldn't have developed anywhere else?` },
+    { id:'op4', type:'voice', priority:10, forTheme:'career',
+      text: r => `You moved on from **${r.company || r.title}**. Looking back now — what did that role teach you about the kind of leader or professional you actually want to be?` }
+  ],
+
+  // ── IMPACT (used in role 0 focus, available in others) ──
+  impact: [
+    { id:'imp1', type:'voice', priority:10,
+      text: r => `What's the single achievement you're most proud of from **${r.company || r.title}**? Walk me through it — what was the situation, what did you personally do, and what was the measurable result?` },
+    { id:'imp2', type:'quickselect', priority:9,
+      text: r => `What was the scale of budget or financial responsibility you held at **${r.company || r.title}**?`,
+      options:['Not budget-responsible','Under £/$/RM 100K','100K – 1M','1M – 10M','Over 10M'] },
+    { id:'imp3', type:'voice', priority:8,
+      text: r => `Give me a specific example from **${r.company || r.title}** where you can put a number on your impact — cost saved, revenue generated, time reduced, efficiency improved. What's your strongest one?` },
+    { id:'imp4', type:'quickselect', priority:7,
+      text: r => `How large were the programmes or projects you personally led at **${r.company || r.title}**?`,
+      options:['Small — weeks, one team','Medium — months, cross-team','Large — 6-12 months, multi-team','Major — 1-2 years, multi-org','Strategic — multi-year, enterprise-wide'] },
+    { id:'imp5', type:'voice', priority:6,
+      text: r => `What problem did **${r.company || 'the organisation'}** have before you got there that you played a significant part in solving?` }
+  ],
+
+  // ── TEAM & STAKEHOLDERS ──
+  team: [
+    { id:'tm1', type:'quickselect', priority:9,
+      text: r => `At **${r.company || r.title}**, how many people were you directly managing or leading?`,
+      options:['None — individual contributor','1–3 people','4–10 people','11–25 people','25+ people'] },
+    { id:'tm2', type:'quickselect', priority:9,
+      text: r => `How many stakeholders were you actively managing at **${r.company || r.title}** — people whose buy-in or decisions you needed regularly?`,
+      options:['1–5','6–15','16–30','30+'] },
+    { id:'tm3', type:'scale', priority:7,
+      text: r => `How senior were the people you were regularly presenting or reporting to at **${r.company || r.title}**?`,
+      scaleLabels:['Team level','Manager level','Director level','C-Suite','Board level'] },
+    { id:'tm4', type:'voice', priority:6,
+      text: r => `Tell me about the most difficult stakeholder relationship you navigated at **${r.company || r.title}**. What made it hard and what did you do?` },
+    { id:'tm5', type:'quickselect', priority:5,
+      text: r => `How cross-functional was your work at **${r.company || r.title}**?`,
+      options:['Mostly within my team','2–3 teams','4–6 different teams','7+ teams / whole organisation'] }
+  ],
+
+  // ── CHALLENGES ──
+  challenges: [
+    { id:'ch1', type:'voice', priority:9,
+      text: r => `Tell me about a time something went wrong at **${r.company || r.title}** — a project that failed, a decision that backfired, or a conflict that escalated. What happened and what did you take from it?` },
+    { id:'ch2', type:'quickselect', priority:8,
+      text: r => `How much ambiguity were you dealing with day-to-day at **${r.company || r.title}**?`,
+      options:['Very little — structured and clear','Some — occasional grey areas','Significant — I created clarity','Constant — high ambiguity was normal'] },
+    { id:'ch3', type:'voice', priority:7,
+      text: r => `Was there a moment at **${r.company || r.title}** where you had to push back on leadership or challenge a decision you disagreed with? What happened?` },
+    { id:'ch4', type:'quickselect', priority:6,
+      text: r => `How much organisational change were you navigating at **${r.company || r.title}**?`,
+      options:['Very stable','Some change','Significant change underway','Major transformation','Constant change / instability'] },
+    { id:'ch5', type:'voice', priority:5,
+      text: r => `What's one thing you'd do differently if you could repeat your time at **${r.company || r.title}**?` }
+  ],
+
+  // ── SKILLS ──
+  skills: [
+    { id:'sk1', type:'voice', priority:8,
+      text: r => `What are the two or three capabilities you became genuinely expert in at **${r.company || r.title}** — things you could now coach or teach others on?` },
+    { id:'sk2', type:'quickselect', priority:7,
+      text: r => `How technical was your **${r.title}** role at **${r.company || 'this organisation'}**?`,
+      options:['Non-technical — people and process only','Lightly technical — needed to understand systems','Moderately technical — wrote specs, reviewed designs','Highly technical — hands-on with systems or architecture'] },
+    { id:'sk3', type:'quickselect', priority:6,
+      text: r => `How data-driven was your work at **${r.company || r.title}**?`,
+      options:['Mostly qualitative','Some data — basic reporting','Data-informed decisions regularly','Heavy analytics — I built or owned the frameworks'] },
+    { id:'sk4', type:'voice', priority:5,
+      text: r => `What tools, systems or frameworks were central to how you operated at **${r.company || r.title}**?` }
+  ],
+
+  // ── DELIVERY ──
+  delivery: [
+    { id:'dl1', type:'quickselect', priority:7,
+      text: r => `What delivery methodology did you use most at **${r.company || r.title}**?`,
+      options:['Waterfall / traditional PM','Agile / Scrum','Kanban','Hybrid — mix of methods','No formal methodology'] },
+    { id:'dl2', type:'quickselect', priority:6,
+      text: r => `How many concurrent workstreams or projects were you typically managing at **${r.company || r.title}**?`,
+      options:['1 at a time','2–3','4–6','7–10','10+'] },
+    { id:'dl3', type:'voice', priority:5,
+      text: r => `Walk me through how you typically set up a new programme at **${r.company || r.title}** — from kickoff to first delivery. What was your approach?` }
+  ],
+
+  // ── CAREER ──
+  career: [
+    { id:'cr1', type:'voice', priority:8,
+      text: r => `Why did you leave **${r.company || r.title}**? What were you looking for that you weren't finding there?` },
+    { id:'cr2', type:'quickselect', priority:7,
+      text: r => `Did your scope or title change during your time at **${r.company || r.title}**?`,
+      options:['No — same role throughout','Yes — title changed','Yes — scope increased significantly','Yes — both title and scope grew'] },
+    { id:'cr3', type:'voice', priority:6,
+      text: r => `What did your time at **${r.company || r.title}** teach you about your own strengths and blind spots?` },
+    { id:'cr4', type:'voice', priority:5,
+      text: r => `How would the person who replaced you at **${r.company || r.title}** describe the state you left things in?` }
+  ],
+
+  // ── LEADERSHIP ──
+  leadership: [
+    { id:'ld1', type:'voice', priority:7,
+      text: r => `How would your team at **${r.company || r.title}** describe your management style? What would they say you were genuinely good at — and where would they say you had room to grow?` },
+    { id:'ld2', type:'voice', priority:6,
+      text: r => `Tell me about someone you developed or coached at **${r.company || r.title}**. What did you do for them and what happened to them?` },
+    { id:'ld3', type:'quickselect', priority:5,
+      text: r => `How would you describe the culture at **${r.company || r.title}**?`,
+      options:['Highly political','Bureaucratic and slow','Mixed — depends on the team','Collaborative and supportive','High-performance and fast-moving'] }
+  ]
+};
+
+// Track used question IDs globally across all roles to prevent repeats
+let usedQuestionIds = [];
+
+function selectQuestions(role, profile, roleIndex) {
+  const theme = ROLE_THEMES[roleIndex % ROLE_THEMES.length];
+  const all = Object.values(QB).flat();
+
+  // Filter out already-used questions
+  const available = all.filter(q => !usedQuestionIds.includes(q.id));
+
+  const scored = available.map(q => {
+    let score = q.priority || 5;
+    const qTheme = getTheme(q.id);
+
+    // Boost questions matching this role's theme focus
+    if (qTheme === theme) score += 4;
+
+    // Boost opening question matching this theme
+    if (q.forTheme === theme) score += 5;
+
+    // Senior/executive — boost strategic questions
+    if (['senior','director','executive'].includes(profile.seniority)) {
+      if (['leadership','career'].includes(qTheme)) score += 2;
+    }
+
+    // Entry/mid — boost skills and delivery
+    if (['entry','mid'].includes(profile.seniority)) {
+      if (['skills','delivery'].includes(qTheme)) score += 1;
+    }
+
+    return { ...q, score, resolvedTheme: qTheme };
+  });
+
+  scored.sort((a,b) => b.score - a.score);
+
+  // Pick with variety — max per theme
+  const maxPerTheme = { opening:1, impact:2, team:2, challenges:2, skills:2, delivery:1, career:2, leadership:1 };
+  // Adjust based on theme focus
+  if (theme === 'impact') { maxPerTheme.impact = 3; maxPerTheme.team = 2; }
+  if (theme === 'challenges') { maxPerTheme.challenges = 3; maxPerTheme.leadership = 1; }
+  if (theme === 'skills') { maxPerTheme.skills = 3; maxPerTheme.delivery = 2; }
+  if (theme === 'career') { maxPerTheme.career = 3; maxPerTheme.leadership = 2; }
+
+  const selected = [];
+  const themeCounts = {};
+
+  for (const q of scored) {
+    if (selected.length >= 8) break;
+    const t = q.resolvedTheme;
+    const count = themeCounts[t] || 0;
+    const max = maxPerTheme[t] || 1;
+    if (count < max) {
+      selected.push(q);
+      themeCounts[t] = count + 1;
+      usedQuestionIds.push(q.id); // mark as used globally
+    }
+  }
+
+  // Top up if under 8
+  for (const q of scored) {
+    if (selected.length >= 8) break;
+    if (!selected.find(s => s.id === q.id)) {
+      selected.push(q);
+      usedQuestionIds.push(q.id);
+    }
+  }
+
+  return selected;
+}
+
+function getTheme(id) {
+  if (id.startsWith('op')) return 'opening';
+  if (id.startsWith('imp')) return 'impact';
+  if (id.startsWith('tm')) return 'team';
+  if (id.startsWith('ch')) return 'challenges';
+  if (id.startsWith('sk')) return 'skills';
+  if (id.startsWith('cr')) return 'career';
+  if (id.startsWith('dl')) return 'delivery';
+  if (id.startsWith('ld')) return 'leadership';
+  return 'other';
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   BLOCK 3: STUDENT / EXPLORER QUESTIONS
+   ── SWAP WITH CLAUDE API FOR PRODUCTION ─────────────────────────────
+══════════════════════════════════════════════════════════════════════ */
+const STUDENT_QUESTIONS = [
+  { id:'st1', type:'voice', text:'What subjects or topics do you genuinely enjoy — things you find yourself reading about or thinking about even outside of school or work?' },
+  { id:'st2', type:'quickselect', text:'Which of these broad areas feel most interesting to you right now?',
+    options:['Technology & Engineering','Business & Finance','Healthcare & Science','Creative & Design','People & Social Impact','I genuinely have no idea yet'] },
+  { id:'st3', type:'voice', text:'Tell me about something you\'re good at — a skill, a task, a type of problem — that you\'ve noticed comes more easily to you than to other people.' },
+  { id:'st4', type:'quickselect', text:'What kind of work environment sounds most appealing to you?',
+    options:['Office / corporate','Remote or flexible','Outdoors / fieldwork','Creative studio or lab','Helping people directly (hospital, school, community)','Building my own thing / entrepreneurship'] },
+  { id:'st5', type:'scale', text:'How important is earning a high salary early in your career, versus doing something you find meaningful?',
+    scaleLabels:['Salary first','Mostly salary','Balanced','Mostly meaning','Meaning first'] },
+  { id:'st6', type:'voice', text:'Is there anything you\'ve always been curious about exploring as a career, but weren\'t sure if it was realistic or how to get into it?' }
+];
+
+const EXPLORE_QUESTIONS = [
+  { id:'ex1', type:'voice', text:'Forget your CV for a moment. If you could do any kind of work and be paid fairly for it — what would it be? No filter.' },
+  { id:'ex2', type:'quickselect', text:'What would you say your biggest strength is — the thing people always come to you for?',
+    options:['Getting things done / organising','Understanding people / relationships','Analytical thinking / problem solving','Creative ideas / innovation','Technical skills','Teaching / explaining things'] },
+  { id:'ex3', type:'voice', text:'What type of problems do you find genuinely energising to work on? And what type drains you?' },
+  { id:'ex4', type:'quickselect', text:'Which of these would feel most rewarding in your work?',
+    options:['Building something new','Fixing something broken','Helping someone directly','Analysing and making sense of complexity','Leading and developing others','Creating something beautiful or meaningful'] },
+  { id:'ex5', type:'voice', text:'Is there a role or industry you\'ve considered but never pursued — and what\'s held you back?' }
+];
+/* ══ END BLOCK 2 & 3 ═════════════════════════════════════════════════ */
+
+
+/* ── UI HELPERS ─────────────────────────────────────────────────────── */
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('act'));
+  document.getElementById(id).classList.add('act');
+}
+
+function now() {
+  return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+}
+
+function addMsg(type, text, label, question) {
+  const container = document.getElementById('chatMessages');
+
+  // Remove typing indicator if present
+  const typing = container.querySelector('.typing-wrap');
+  if (typing) typing.remove();
+
+  const wrap = document.createElement('div');
+  wrap.className = `msg-wrap ${type}`;
+
+  const av = document.createElement('div');
+  av.className = `avatar ${type}`;
+  av.textContent = type === 'bot' ? '🎯' : '👤';
+
+  const bub = document.createElement('div');
+  bub.className = `bubble ${type}`;
+
+  const html = text.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  if (label) {
+    bub.innerHTML = `<div style="font-size:10px;color:${type==='bot'?'var(--muted)':'rgba(255,255,255,.6)'};margin-bottom:4px;font-weight:600">${label}</div>${html}`;
+  } else {
+    bub.innerHTML = html;
+  }
+
+  // Interactive question elements
+  if (question && type === 'bot') {
+    if (question.type === 'quickselect') {
+      const opts = document.createElement('div');
+      opts.className = 'q-opts';
+      question.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'q-opt';
+        btn.textContent = opt;
+        btn.onclick = () => handleQuickSelect(opt, opts, question);
+        opts.appendChild(btn);
+      });
+      bub.appendChild(opts);
+    }
+    if (question.type === 'scale') {
+      const sw = document.createElement('div');
+      sw.className = 'scale-wrap';
+      const sb = document.createElement('div');
+      sb.className = 'scale-btns';
+      const labels = question.scaleLabels || ['1','2','3','4','5'];
+      labels.forEach((lbl, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'scale-btn';
+        btn.textContent = i + 1;
+        btn.title = lbl;
+        btn.onclick = () => handleScale(i+1, lbl, sb, question);
+        sb.appendChild(btn);
+      });
+      const sl = document.createElement('div');
+      sl.className = 'scale-labels';
+      sl.innerHTML = `<span>${labels[0]}</span><span>${labels[labels.length-1]}</span>`;
+      sw.appendChild(sb);
+      sw.appendChild(sl);
+      bub.appendChild(sw);
+    }
+  }
+
+  // Courtesy / pause card
+  if (question && question.isCourtesy) {
+    const card = document.createElement('div');
+    card.className = 'pause-card';
+    card.innerHTML = `<p>You're doing great. I have more questions to complete your profile — it helps me give you much better recommendations. Want to continue now, or save and come back later?</p>`;
+    const btns = document.createElement('div');
+    btns.className = 'pause-card-btns';
+    const yes = document.createElement('button');
+    yes.className = 'pc-yes';
+    yes.textContent = 'Continue now →';
+    yes.onclick = () => { card.remove(); continueAfterCourtesy(); };
+    const no = document.createElement('button');
+    no.className = 'pc-no';
+    no.textContent = 'Save & come back later';
+    no.onclick = () => pauseInterview();
+    btns.appendChild(yes);
+    btns.appendChild(no);
+    card.appendChild(btns);
+    bub.appendChild(card);
+  }
+
+  const t = document.createElement('div');
+  t.className = `btime ${type === 'user' ? 'r' : ''}`;
+  t.textContent = now();
+  bub.appendChild(t);
+
+  wrap.appendChild(av);
+  wrap.appendChild(bub);
+  container.appendChild(wrap);
+  container.scrollTop = container.scrollHeight;
+}
+
+function showTyping() {
+  const container = document.getElementById('chatMessages');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-wrap typing-wrap';
+  wrap.innerHTML = `<div class="avatar bot">🎯</div><div class="bubble bot"><div class="typing"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div></div>`;
+  container.appendChild(wrap);
+  container.scrollTop = container.scrollHeight;
+}
+
+/* ── PATHWAY SELECTION ──────────────────────────────────────────────── */
+
+function selectPathway(pathway) {
+  APP.pathway = pathway;
+  if (pathway === 'experienced') {
+    showScreen('screenCV');
+  } else if (pathway === 'student') {
+    document.getElementById('studentTitle').textContent = 'Let\'s find your path';
+    document.getElementById('studentSubtitle').textContent = 'A few questions to help us understand what you enjoy and what careers might suit you.';
+    showScreen('screenStudent');
+  } else if (pathway === 'explore') {
+    document.getElementById('studentTitle').textContent = 'Fresh start — let\'s explore';
+    document.getElementById('studentSubtitle').textContent = 'No background check. Just tell me what you\'re interested in and what energises you.';
+    showScreen('screenStudent');
+  }
+}
+
+/* ── STUDENT / EXPLORER INTERVIEW ───────────────────────────────────── */
+
+function startStudentInterview() {
+  const questions = APP.pathway === 'explore' ? EXPLORE_QUESTIONS : STUDENT_QUESTIONS;
+  APP.questions = questions;
+  APP.qIndex = 0;
+  APP.totalQ = questions.length;
+  APP.answeredQ = 0;
+  APP.sinceCourtesy = 0;
+
+  showScreen('screenChat');
+  document.getElementById('pauseBtn').classList.add('visible');
+  document.getElementById('progressBar').classList.add('visible');
+  document.getElementById('progLabel').textContent = APP.pathway === 'explore' ? 'Fresh start exploration' : 'Career path exploration';
+
+  addMsg('bot', APP.pathway === 'explore'
+    ? 'Let\'s forget the CV. I want to understand what actually drives you. Answer as openly as you can — there are no wrong answers here.'
+    : 'Great — let\'s figure out what kind of career would actually suit you. I\'ll ask a few questions about your interests and strengths.');
+
+  setTimeout(() => askStudentQ(), 1000);
+}
+
+function askStudentQ() {
+  if (APP.qIndex >= APP.questions.length) {
+    finishInterview();
+    return;
+  }
+
+  // Courtesy check every 3 questions
+  if (APP.sinceCourtesy >= 3 && APP.qIndex < APP.questions.length - 1) {
+    APP.sinceCourtesy = 0;
+    showTyping();
+    setTimeout(() => addMsg('bot', '', null, { isCourtesy: true }), 600);
+    return;
+  }
+
+  const q = APP.questions[APP.qIndex];
+  APP.currentQ = q;
+  APP.qIndex++;
+  APP.sinceCourtesy++;
+
+  updateProgress();
+  showTyping();
+  setTimeout(() => {
+    const qText = typeof q.text === 'function' ? q.text() : q.text;
+    addMsg('bot', qText, `Q${APP.qIndex} of ${APP.totalQ}`, q);
+  }, 700);
+}
+
+function continueAfterCourtesy() {
+  if (APP.pathway === 'experienced') {
+    askNextRoleQ();
+  } else {
+    askStudentQ();
+  }
+}
+
+/* ── EXPERIENCED INTERVIEW ──────────────────────────────────────────── */
+
+function startExperiencedInterview() {
+  const cvText = document.getElementById('cvInput').value.trim();
+  if (!cvText) {
+    document.getElementById('cvInput').style.borderColor = 'var(--red)';
+    document.getElementById('cvInput').placeholder = 'Please paste your CV or upload a file first...';
+    return;
+  }
+
+  APP.profile = parseCV(cvText);
+  APP.roles = APP.profile.roles.length ? [...APP.profile.roles] : [];
+
+  // Always show confirmation screen — even if roles found
+  showConfirmScreen();
+}
+
+function showConfirmScreen() {
+  showScreen('screenConfirm');
+  renderConfirmList();
+
+  const note = document.getElementById('confirmNote');
+  if (APP.roles.length === 0) {
+    note.innerHTML = `⚠️ I couldn't automatically detect your roles from the CV format. Please add your roles manually below — just your job title, company and rough dates.`;
+    note.style.display = 'block';
+  } else {
+    note.innerHTML = `✅ Found ${APP.roles.length} role${APP.roles.length > 1 ? 's' : ''}. Edit anything that looks wrong — the interview questions will use exactly what's shown here.`;
+    note.style.background = '#f0fdf4';
+    note.style.borderColor = '#bbf7d0';
+    note.style.color = '#166534';
+  }
+}
+
+function renderConfirmList() {
+  const list = document.getElementById('roleConfirmList');
+  list.innerHTML = '';
+
+  if (APP.roles.length === 0) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'text-align:center;padding:16px;color:var(--muted);font-size:13px';
+    empty.textContent = 'No roles found — add them below';
+    list.appendChild(empty);
+    return;
+  }
+
+  APP.roles.forEach((role, idx) => {
+    const item = document.createElement('div');
+    item.className = 'role-confirm-item';
+    item.id = `rci-${idx}`;
+    item.innerHTML = `
+      <div class="rci-top">
+        <div>
+          <div class="rci-title">${role.title}</div>
+          <div class="rci-company">${role.company || '<span style="color:#d97706">Company not detected</span>'}</div>
+          <div class="rci-dates">${role.dates || 'Dates not detected'}</div>
+        </div>
+        <div class="rci-actions">
+          <button class="rci-edit" onclick="editRole(${idx})">Edit</button>
+          <button class="rci-remove" onclick="removeRole(${idx})">Remove</button>
+        </div>
+      </div>
+      <div class="rci-edit-fields" id="rci-fields-${idx}" style="display:none">
+        <input class="rci-input" id="rci-t-${idx}" placeholder="Job title" value="${role.title}">
+        <input class="rci-input" id="rci-c-${idx}" placeholder="Company name" value="${role.company || ''}">
+        <input class="rci-input" id="rci-d-${idx}" placeholder="Dates e.g. 2020–2023" value="${role.dates || ''}">
+        <button class="rci-save" onclick="saveRoleEdit(${idx})">Save</button>
+      </div>`;
+    list.appendChild(item);
+  });
+}
+
+function editRole(idx) {
+  const item = document.getElementById(`rci-${idx}`);
+  const fields = document.getElementById(`rci-fields-${idx}`);
+  item.classList.add('editing');
+  fields.style.display = 'flex';
+  fields.style.flexDirection = 'column';
+}
+
+function saveRoleEdit(idx) {
+  const title = document.getElementById(`rci-t-${idx}`).value.trim();
+  const company = document.getElementById(`rci-c-${idx}`).value.trim();
+  const dates = document.getElementById(`rci-d-${idx}`).value.trim();
+  if (!title) return;
+  APP.roles[idx] = { ...APP.roles[idx], title, company: company || null, dates: dates || null };
+  renderConfirmList();
+}
+
+function removeRole(idx) {
+  APP.roles.splice(idx, 1);
+  renderConfirmList();
+  const note = document.getElementById('confirmNote');
+  if (APP.roles.length === 0) {
+    note.innerHTML = `⚠️ No roles left — add at least one role to continue.`;
+    note.style.background = '#fffbeb';
+    note.style.borderColor = '#fde68a';
+    note.style.color = '#78350f';
+  }
+}
+
+function addRoleManually() {
+  APP.roles.push({ title: '', company: '', dates: '', raw: 'manual' });
+  renderConfirmList();
+  const idx = APP.roles.length - 1;
+  editRole(idx);
+  document.getElementById(`rci-t-${idx}`).focus();
+}
+
+function confirmRolesAndStart() {
+  // Validate at least one role
+  const valid = APP.roles.filter(r => r.title && r.title.trim());
+  if (!valid.length) {
+    alert('Please add at least one role to continue.');
+    return;
+  }
+  APP.roles = valid;
+  APP.currentRole = 0;
+  APP.totalQ = APP.roles.length * 8;
+  APP.answeredQ = 0;
+  APP.sinceCourtesy = 0;
+  usedQuestionIds = []; // reset so questions don't carry over from previous session
+
+  loadRoleQuestions();
+  showScreen('screenChat');
+  document.getElementById('pauseBtn').classList.add('visible');
+  document.getElementById('progressBar').classList.add('visible');
+
+  const roleList = APP.roles.map(r =>
+    `**${r.title}${r.company ? ` at ${r.company}` : ''}**`
+  ).join(', ');
+
+  const intro = `Got it. I'll ask you about your time as ${roleList}.
+
+Take your time, be as specific as you can — numbers and examples always help. Tap the mic if you'd rather speak. You can save and pause at any point.
+
+Let's start with **${APP.roles[0].title}${APP.roles[0].company ? ` at ${APP.roles[0].company}` : ''}**.`;
+
+  addMsg('bot', intro);
+  updateStagePills();
+  setTimeout(() => askNextRoleQ(), 1200);
+}
+
+function loadRoleQuestions() {
+  const role = APP.roles[APP.currentRole];
+  APP.questions = selectQuestions(role, APP.profile, APP.currentRole);
+  APP.qIndex = 0;
+}
+
+function askNextRoleQ() {
+  // Check if current role is done
+  if (APP.qIndex >= APP.questions.length) {
+    APP.currentRole++;
+    if (APP.currentRole >= APP.roles.length) {
+      finishInterview();
+      return;
+    }
+    loadRoleQuestions();
+    const role = APP.roles[APP.currentRole];
+    showTyping();
+    setTimeout(() => {
+      addMsg('bot', `Good — let's move on to your time as **${role.title}${role.company ? ` at ${role.company}` : ''}**.`);
+      setTimeout(() => askNextRoleQ(), 800);
+    }, 700);
+    updateStagePills();
+    return;
+  }
+
+  // Courtesy check every 5 questions
+  if (APP.sinceCourtesy >= 5 && APP.qIndex < APP.questions.length - 1) {
+    APP.sinceCourtesy = 0;
+    showTyping();
+    setTimeout(() => addMsg('bot', '', null, { isCourtesy: true }), 600);
+    return;
+  }
+
+  const q = APP.questions[APP.qIndex];
+  APP.currentQ = q;
+  APP.qIndex++;
+  APP.sinceCourtesy++;
+
+  updateProgress();
+  showTyping();
+  setTimeout(() => {
+    const role = APP.roles[APP.currentRole];
+    const qText = typeof q.text === 'function' ? q.text(role) : q.text;
+    const label = `Q${APP.qIndex} of ${APP.questions.length} · ${role.title}${role.company ? ` · ${role.company}` : ''}`;
+    addMsg('bot', qText, label, q);
+  }, 700);
+}
+
+/* ── ANSWER HANDLERS ─────────────────────────────────────────────────── */
+
+function handleQuickSelect(opt, container, question) {
+  container.querySelectorAll('.q-opt').forEach(b => { b.classList.remove('sel'); b.disabled = true; });
+  const sel = [...container.querySelectorAll('.q-opt')].find(b => b.textContent === opt);
+  if (sel) sel.classList.add('sel');
+  recordAnswer(question.id, opt, question);
+  addMsg('user', opt);
+  APP.currentQ = null;
+  setTimeout(() => { updateProgress(); nextQuestion(); }, 500);
+}
+
+function handleScale(val, label, container, question) {
+  container.querySelectorAll('.scale-btn').forEach((b,i) => { b.disabled=true; if(i<val) b.classList.add('sel'); });
+  const ans = `${val} — ${label}`;
+  recordAnswer(question.id, ans, question);
+  addMsg('user', ans);
+  APP.currentQ = null;
+  setTimeout(() => { updateProgress(); nextQuestion(); }, 500);
+}
+
+function sendMessage() {
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = '44px';
+
+  addMsg('user', text);
+
+  if (APP.currentQ) {
+    recordAnswer(APP.currentQ.id, text, APP.currentQ);
+    APP.currentQ = null;
+  } else if (APP.profile && APP.profile.roles.length === 0) {
+    // Manual role entry
+    APP.profile.roles = [{ title: text, company: null, dates: null, raw: text }];
+    APP.roles = APP.profile.roles;
+    APP.currentRole = 0;
+    APP.totalQ = 10;
+    APP.answeredQ = 0;
+    loadRoleQuestions();
+    document.getElementById('progressBar').classList.add('visible');
+    updateStagePills();
+    setTimeout(() => askNextRoleQ(), 600);
+    return;
+  }
+
+  setTimeout(() => { updateProgress(); nextQuestion(); }, 400);
+}
+
+function nextQuestion() {
+  if (APP.pathway === 'experienced') {
+    askNextRoleQ();
+  } else {
+    askStudentQ();
+  }
+}
+
+function recordAnswer(qId, answer, question) {
+  APP.answers.push({
+    roleIndex: APP.currentRole,
+    qId, answer,
+    questionText: question ? (typeof question.text === 'function' ? 'dynamic' : question.text) : '',
+    timestamp: Date.now()
+  });
+  APP.answeredQ++;
+  saveProgress();
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function autoResize(el) {
+  el.style.height = '44px';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+/* ── PROGRESS ────────────────────────────────────────────────────────── */
+
+function updateProgress() {
+  const pct = APP.totalQ > 0 ? Math.round((APP.answeredQ / APP.totalQ) * 100) : 0;
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('progPct').textContent = pct + '%';
+  const role = APP.pathway === 'experienced' && APP.roles[APP.currentRole];
+  document.getElementById('progLabel').textContent = role
+    ? `${role.title}${role.company ? ` · ${role.company}` : ''}`
+    : (APP.pathway === 'explore' ? 'Fresh start exploration' : 'Career exploration');
+}
+
+function updateStagePills() {
+  const row = document.getElementById('stageRow');
+  row.innerHTML = '';
+  APP.roles.forEach((r, i) => {
+    const pill = document.createElement('div');
+    pill.className = 'stage-pill' + (i < APP.currentRole ? ' done' : i === APP.currentRole ? ' act' : '');
+    pill.textContent = `${r.title}${r.company ? ` · ${r.company}` : ''}`;
+    row.appendChild(pill);
+  });
+  const done = document.createElement('div');
+  done.className = 'stage-pill' + (APP.currentRole >= APP.roles.length ? ' act' : '');
+  done.textContent = '✓ Complete';
+  row.appendChild(done);
+}
+
+/* ── PAUSE / RESUME ──────────────────────────────────────────────────── */
+
+function pauseInterview() {
+  saveProgress();
+  showScreen('screenPaused');
+  document.getElementById('pauseBtn').classList.remove('visible');
+  document.getElementById('progressBar').classList.remove('visible');
+}
+
+function resumeInterview() {
+  const saved = loadProgress();
+  if (!saved) { showScreen('screenPathway'); return; }
+  Object.assign(APP, saved);
+  showScreen('screenChat');
+  document.getElementById('pauseBtn').classList.add('visible');
+  document.getElementById('progressBar').classList.add('visible');
+  updateProgress();
+  if (APP.pathway === 'experienced') updateStagePills();
+  addMsg('bot', 'Welcome back! Let\'s pick up where we left off.');
+  setTimeout(() => nextQuestion(), 800);
+}
+
+/* ── FINISH ──────────────────────────────────────────────────────────── */
+
+function finishInterview() {
+  document.getElementById('progFill').style.width = '100%';
+  document.getElementById('progPct').textContent = '100%';
+  document.getElementById('pauseBtn').classList.remove('visible');
+
+  // Fix 6 — save full profile + answers for coach to use
+  saveProfileForCoach();
+
+  showScreen('screenComplete');
+
+  const card = document.getElementById('profileCard');
+  card.innerHTML = '<h3>🎯 Your Profile Summary</h3>';
+
+  const rows = APP.pathway === 'experienced' ? [
+    { lbl:'Roles captured', val: APP.roles.map(r => `${r.title}${r.company ? ` at ${r.company}` : ''}`).join(', ') || '—' },
+    { lbl:'Experience', val: APP.profile?.yearsExp ? `~${APP.profile.yearsExp} years` : 'Not specified' },
+    { lbl:'Seniority', val: APP.profile?.seniority ? APP.profile.seniority.charAt(0).toUpperCase() + APP.profile.seniority.slice(1) : '—' },
+    { lbl:'Industries', val: APP.profile?.industries?.join(', ') || 'General' },
+    { lbl:'Answers captured', val: `${APP.answers.length} responses` }
+  ] : [
+    { lbl:'Pathway', val: APP.pathway === 'explore' ? 'Fresh start / open exploration' : 'Student / early career explorer' },
+    { lbl:'Questions answered', val: APP.answers.length },
+    { lbl:'Next step', val: 'Explore career paths on RADAR →' }
+  ];
+
+  rows.forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'profile-row';
+    div.innerHTML = `<span class="lbl">${r.lbl}</span><span class="val">${r.val}</span>`;
+    card.appendChild(div);
+  });
+
+  // For student/explore paths — show career suggestions
+  if (APP.pathway !== 'experienced') {
+    const suggestions = deriveCareerSuggestions();
+    if (suggestions.length) {
+      const sugHead = document.createElement('div');
+      sugHead.style.cssText = 'margin-top:16px;font-size:13px;font-weight:700;color:var(--p);margin-bottom:8px';
+      sugHead.textContent = '🎯 Career paths to explore based on your answers:';
+      card.appendChild(sugHead);
+      suggestions.forEach(s => {
+        const btn = document.createElement('button');
+        btn.style.cssText = 'display:block;width:100%;text-align:left;border:1px solid #ddd6fe;background:#f5f3ff;color:var(--p);padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;margin-bottom:6px;cursor:pointer';
+        btn.innerHTML = `${s.emoji} ${s.title} <span style="color:var(--muted);font-weight:400;font-size:12px">→ See entry level roles</span>`;
+        btn.onclick = () => {
+          alert(`In the full RADAR app, this takes you directly to the ${s.title} career ladder showing entry roles, required skills and recommended courses.`);
+        };
+        card.appendChild(btn);
+      });
+    }
+  }
+
+  // Fix 5 — CTA to go to career coach
+  const ctaWrap = document.createElement('div');
+  ctaWrap.style.cssText = 'margin-top:20px;padding-top:16px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px';
+
+  const coachBtn = document.createElement('button');
+  coachBtn.style.cssText = 'width:100%;border:0;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;padding:13px;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer';
+  coachBtn.textContent = 'Go to Career Coach →';
+  coachBtn.onclick = () => {
+    // In full app this routes to coach page with profile loaded
+    // For now show confirmation that profile is ready
+    alert('In the full RADAR app, the Career Coach now has access to everything you just told us — your roles, achievements, challenges, and strengths. It can reference your specific experience in every conversation.');
+  };
+
+  const restartBtn = document.createElement('button');
+  restartBtn.style.cssText = 'width:100%;border:1px solid var(--line);background:#fff;color:var(--muted);padding:10px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer';
+  restartBtn.textContent = '← Start again';
+  restartBtn.onclick = restartAll;
+
+  ctaWrap.appendChild(coachBtn);
+  ctaWrap.appendChild(restartBtn);
+  card.appendChild(ctaWrap);
+
+  saveProgress();
+}
+
+function restartAll() {
+  Object.assign(APP, {
+    pathway:null, profile:null, roles:[], currentRole:0,
+    questions:[], qIndex:0, answers:[], totalQ:0, answeredQ:0,
+    sinceCourtesy:0, currentQ:null, paused:false
+  });
+  document.getElementById('chatMessages').innerHTML = '';
+  document.getElementById('cvInput').value = '';
+  document.getElementById('progressBar').classList.remove('visible');
+  document.getElementById('pauseBtn').classList.remove('visible');
+  showScreen('screenPathway');
+}
+
+/* ── VOICE INPUT ─────────────────────────────────────────────────────── */
+
+function requestMic() {
+  if (APP.micEnabled) { toggleListening(); return; }
+  document.getElementById('micModal').classList.add('open');
+}
+
+function closeMicModal() {
+  document.getElementById('micModal').classList.remove('open');
+  document.getElementById('micTip').classList.add('show');
+}
+
+function enableMic() {
+  document.getElementById('micModal').classList.remove('open');
+  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    document.getElementById('micTip').textContent = '🎤 Voice not supported in this browser — try Chrome';
+    document.getElementById('micTip').classList.add('show');
+    return;
+  }
+  navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(() => {
+      APP.micEnabled = true;
+      document.getElementById('micBadge').classList.remove('show');
+      document.getElementById('micTip').classList.remove('show');
+      document.getElementById('inputHint').textContent = 'Tap mic to speak · Enter to send';
+      toggleListening();
+    })
+    .catch(err => {
+      const msg = err.name === 'NotAllowedError'
+        ? '🎤 Microphone blocked. Allow it in browser settings, or type your answers.'
+        : `🎤 Mic error: ${err.message}`;
+      document.getElementById('micTip').textContent = msg;
+      document.getElementById('micTip').classList.add('show');
+    });
+}
+
+function toggleListening() {
+  if (APP.isListening) { APP.recognition?.stop(); return; }
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  APP.recognition = new SR();
+  APP.recognition.continuous = false;
+  APP.recognition.interimResults = true;
+  APP.recognition.lang = 'en-GB';
+
+  APP.recognition.onstart = () => {
+    APP.isListening = true;
+    document.getElementById('micBtn').classList.add('listening');
+    document.getElementById('micBtn').childNodes[0].textContent = '⏹';
+    document.getElementById('inputHint').textContent = '🎤 Listening... speak now';
+  };
+
+  APP.recognition.onresult = (e) => {
+    const t = Array.from(e.results).map(r => r[0].transcript).join('');
+    document.getElementById('userInput').value = t;
+    autoResize(document.getElementById('userInput'));
+  };
+
+  APP.recognition.onend = () => {
+    APP.isListening = false;
+    document.getElementById('micBtn').classList.remove('listening');
+    document.getElementById('micBtn').childNodes[0].textContent = '🎤';
+    document.getElementById('inputHint').textContent = 'Tap mic to speak · Enter to send';
+    const t = document.getElementById('userInput').value.trim();
+    if (t) setTimeout(() => sendMessage(), 300);
+  };
+
+  APP.recognition.onerror = (e) => {
+    APP.isListening = false;
+    document.getElementById('micBtn').classList.remove('listening');
+    document.getElementById('micBtn').childNodes[0].textContent = '🎤';
+    if (e.error !== 'no-speech') {
+      document.getElementById('micTip').textContent = `🎤 ${e.error === 'not-allowed' ? 'Microphone blocked — allow it in browser settings' : 'Voice error: ' + e.error}`;
+      document.getElementById('micTip').classList.add('show');
+    }
+  };
+
+  APP.recognition.start();
+}
+
+/* ── LOCAL STORAGE ───────────────────────────────────────────────────── */
+
+// Fix 6 — save full enriched profile for coach to consume
+function saveProfileForCoach() {
+  try {
+    const coachProfile = {
+      pathway: APP.pathway,
+      roles: APP.roles,
+      profile: APP.profile,
+      answers: APP.answers,
+      // Build a readable summary for the coach
+      summary: buildCoachSummary(),
+      savedAt: Date.now()
+    };
+    localStorage.setItem('radar_coach_profile', JSON.stringify(coachProfile));
+  } catch(e) {}
+}
+
+function buildCoachSummary() {
+  if (!APP.roles.length) return '';
+  const roleLines = APP.roles.map(r =>
+    `${r.title}${r.company ? ` at ${r.company}` : ''}${r.dates ? ` (${r.dates})` : ''}`
+  ).join(', ');
+  const answerLines = APP.answers.slice(0, 20).map(a =>
+    `Q: ${a.questionText || a.qId} → A: ${String(a.answer).substring(0, 150)}`
+  ).join('\n');
+  return `Career background: ${roleLines}.\nSeniority: ${APP.profile?.seniority || 'unknown'}.\nIndustries: ${APP.profile?.industries?.join(', ') || 'general'}.\n\nKey answers:\n${answerLines}`;
+}
+
+function saveProgress() {
+  try {
+    localStorage.setItem('radar_v2', JSON.stringify({
+      pathway: APP.pathway, profile: APP.profile, roles: APP.roles,
+      currentRole: APP.currentRole, qIndex: APP.qIndex,
+      answers: APP.answers, totalQ: APP.totalQ, answeredQ: APP.answeredQ,
+      savedAt: Date.now()
+    }));
+  } catch(e) {}
+}
+
+function loadProgress() {
+  try {
+    const s = localStorage.getItem('radar_v2');
+    if (!s) return null;
+    const d = JSON.parse(s);
+    if ((Date.now() - d.savedAt) > 90 * 24 * 60 * 60 * 1000) return null;
+    return d;
+  } catch(e) { return null; }
+}
+
+/* ── FILE UPLOAD ─────────────────────────────────────────────────────── */
+
+function handleDragOver(e) { e.preventDefault(); document.getElementById('uploadZone').classList.add('drag'); }
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('uploadZone').classList.remove('drag');
+  if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]);
+}
+function handleFileSelect(e) { if (e.target.files[0]) processFile(e.target.files[0]); }
+
+async function processFile(file) {
+  const zone = document.getElementById('uploadZone');
+  const title = document.getElementById('uzTitle');
+  const status = document.getElementById('uploadStatus');
+  const ext = '.' + file.name.split('.').pop().toLowerCase();
+
+  if (!['.pdf','.doc','.docx'].includes(ext)) {
+    title.textContent = '⚠️ Please upload PDF or Word file';
+    return;
+  }
+  if (file.size > 10*1024*1024) { title.textContent = '⚠️ File too large — max 10MB'; return; }
+
+  title.textContent = '⏳ Reading your CV...';
+  try {
+    let text = ext === '.pdf' ? await extractPDF(file) : await extractDOCX(file);
+    if (!text || text.trim().length < 30) {
+      title.textContent = '⚠️ Could not read text — paste below instead';
+      return;
+    }
+    document.getElementById('cvInput').value = text;
+    zone.classList.add('done');
+    title.textContent = `✅ ${file.name}`;
+    status.style.display = 'block';
+    status.textContent = `✓ Extracted ~${text.split(/\s+/).length} words`;
+  } catch(err) {
+    title.textContent = '⚠️ Could not read file — paste your CV below';
+  }
+}
+
+async function extractPDF(file) {
+  if (typeof pdfjsLib === 'undefined') throw new Error('PDF.js not loaded');
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({data:buf}).promise;
+  let out = '';
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    out += content.items.map(item => item.str).join(' ') + '\n';
+  }
+  return out;
+}
+
+async function extractDOCX(file) {
+  if (typeof mammoth === 'undefined') throw new Error('Mammoth not loaded');
+  const buf = await file.arrayBuffer();
+  const result = await mammoth.extractRawText({arrayBuffer: buf});
+  return result.value;
+}
+
+function loadSample() {
+  document.getElementById('cvInput').value = `Azhar Rahman — Senior Program Manager
+
+Currently: Senior Program Manager at a major tech company in Kuala Lumpur (2021–present)
+Previously: Analytics Lead at Grab, Kuala Lumpur (2018–2021)
+Previously: Strategy Manager at a consultancy in Dhaka (2015–2018)
+
+10 years of experience across technology, financial services and consulting. Strong track record in digital transformation, stakeholder management and cross-functional programme delivery. Led programmes worth up to RM 20M. Team of 8 direct reports. Worked with C-suite stakeholders across 3 countries.
+
+Skills: Programme management, stakeholder management, agile delivery, data analytics, strategy, change management.`;
+}
+
+/* ── INIT ────────────────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  // Show mic badge
+  document.getElementById('micBadge').classList.add('show');
+
+  // Auto-detect if mic will be blocked (file:// or content:// protocol)
+  const proto = window.location.protocol;
+  if (proto === 'file:' || proto === 'content:' || window.location.href.includes('content://')) {
+    document.getElementById('micTip').classList.add('show');
+    // Disable mic button visually but keep it tappable to show explanation
+    document.getElementById('micBtn').title = 'Voice blocked on local files — tap for more info';
+  }
+
+  // Check for saved session
+  const saved = loadProgress();
+  if (saved && saved.answers && saved.answers.length > 0) {
+    const days = Math.round((Date.now() - saved.savedAt) / (1000*60*60*24));
+    const cards = document.querySelector('.pathway-cards');
+    const resumeCard = document.createElement('div');
+    resumeCard.className = 'pathway-card';
+    resumeCard.style.borderColor = 'var(--green)';
+    resumeCard.innerHTML = `<div class="pc-icon" style="background:#ecfdf3">▶️</div><div class="pc-body"><h3 style="color:var(--green)">Continue where I left off</h3><p>Saved session from ${days===0?'today':days+' day(s) ago'} — ${saved.answers.length} answers already captured</p></div>`;
+    resumeCard.onclick = () => resumeInterview();
+    cards.insertBefore(resumeCard, cards.firstChild);
+  }
+});
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script>
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+</script>
+</body>
+</html>
